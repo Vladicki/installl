@@ -20,6 +20,7 @@ sudo apt update -y
 
 echo -e "${YELLOW}Upgrading packages...${RESET}"
 sudo apt upgrade -y
+sudo apt --fix-broken install
 
 # -----------------------------
 # Install base packages
