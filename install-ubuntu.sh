@@ -62,6 +62,11 @@ echo -e "${YELLOW}Installing Oh-My-Zsh...${RESET}"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
 
 # -----------------------------
+# Install .zshrc 
+# -----------------------------
+curl -fsSL https://raw.githubusercontent.com/Vladicki/installl/refs/heads/main/.zshrc -o "$HOME/.zshrc"
+
+# -----------------------------
 # SSH Setup
 # -----------------------------
 read -p "Do you want to install and enable SSH? (y/n) " install_ssh

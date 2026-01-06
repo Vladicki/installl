@@ -10,25 +10,28 @@
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
+# PATH for rust
 export PATH="$HOME/.cargo/bin:$PATH"
+# PATH for golang
 export PATH="$(go env GOPATH)/bin:$PATH"
+# Created by `pipx` 
+export PATH="$PATH:/home/vla/.local/bin"
 
 
-# openMPI setup
-export PATH="$PATH:/home/$USER/.openmpi/bin"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/home/$USER/.openmpi/lib/"
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="random"
+# ZSH_THEME="tjkirch_mod"
+ZSH_THEME=random
 # ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+#old "robbyrussell" "agnoster"
+ZSH_THEME_RANDOM_CANDIDATES=(  "ys" "michelebologna" "re5et" "Soliah" "xiong-chiamiov" "takashiyoshida" "geoffgarside" "kafeitu" "fletcherm" "fino" "kafeitu")
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -95,7 +98,7 @@ alias cd='z'
 
 #send with e2ecp
 alias send='e2ecp send'
-
+# Add this to your ~/.zshrc
 gitc() {
   if [ -z "$1" ]; then
     echo "Provide argument of `commit message`"
@@ -119,7 +122,7 @@ alias fopen='thunar'
 
 alias cl='clear'
 # alias f='google'
-# alias t='kitty'
+alias t='kitty'
 
 alias act='source myenv/bin/activate'
 alias pvenv='python3 -m venv myenv'
@@ -145,6 +148,7 @@ alias nvrun='__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_L
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
 export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -435,7 +439,5 @@ Tip: Scroll with ↑↓ / j k | Search with / | Quit with q
 }
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# Created by `pipx` on 2025-08-01 13:33:02
-export PATH="$PATH:/home/vla/.local/bin"
