@@ -141,12 +141,10 @@ if [[ "$install_go" =~ ^[Yy]$ ]]; then
     sudo tar -C /usr/local -xzf ${LATEST_GO}.linux-amd64.tar.gz
     rm ${LATEST_GO}.linux-amd64.tar.gz
     
-    if ! grep -q "GOPATH" "$HOME/.zshrc"; then
-    cat <<'EOF' >> "$HOME/.zshrc"
-    export GOPATH="$HOME/go"
-    export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
-    EOF
-    fi
+cat <<-'EOF' >> "$HOME/.zshrc"
+	export GOPATH="$HOME/go"
+	export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
+EOF
     
     # Reload shell
     source ~/.zshrc
