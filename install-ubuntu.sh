@@ -39,7 +39,22 @@ sudo apt install -y \
     neovim \
     tmux \
     zsh
-
+    fzf \
+    python3 \
+    python3-venv \
+    g++ \
+    gparted \
+    util-linux \
+    parted \
+    e2fsprogs \
+    ffmpeg \
+    mpv \
+    imagemagick \
+    upower \
+    rfkill \
+    network-manager \
+    thunar \
+    zoxide
 # -----------------------------
 # Install Oh-My-Zsh
 # -----------------------------
@@ -86,6 +101,38 @@ $(lsb_release -cs) stable" \
     sudo systemctl start docker
     echo -e "${GREEN}Docker installed and started.${RESET}"
 fi
+
+# -----------------------------
+# GoLang Setup
+# -----------------------------
+read -p "Do you want to install the latest Go (Golang)? (y/n) " install_go
+if [[ "$install_go" =~ ^[Yy]$ ]]; then
+    echo -e "${YELLOW}Installing latest Go...${RESET}"
+    
+    # Remove old Go if exists
+    sudo rm -rf /usr/local/go
+    
+    # Get latest version dynamically
+    LATEST_GO=$(curl -s https://go.dev/VERSION?m=text)
+    echo "Latest Go version: $LATEST_GO"
+    
+    # Download and extract
+    curl -LO https://go.dev/dl/${LATEST_GO}.linux-amd64.tar.gz
+    sudo tar -C /usr/local -xzf ${LATEST_GO}.linux-amd64.tar.gz
+    rm ${LATEST_GO}.linux-amd64.tar.gz
+    
+    # Add to PATH if not already present
+    if ! grep -q "/usr/local/go/bin" <<< "$PATH"; then
+        echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.zshrc
+        echo 'export GOPATH=$HOME/go' >> ~/.zshrc
+        echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.zshrc
+    fi
+    
+    # Reload shell
+    source ~/.zshrc
+    echo -e "${GREEN}Go installed successfully:${RESET} $(go version)"
+fi
+
 
 echo -e "${GREEN}Setup completed!${RESET}"
 
