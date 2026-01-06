@@ -133,7 +133,7 @@ if [[ "$install_go" =~ ^[Yy]$ ]]; then
     sudo rm -rf /usr/local/go
     
     # Get latest version dynamically
-    LATEST_GO=$(curl -s https://go.dev/VERSION?m=text | head -n1)
+LATEST_GO=$(curl -s "https://go.dev/VERSION?m=text" | head -n1 | tr -d '\r\n')
     echo "Latest Go version: $LATEST_GO"
     
     # Download and extract
