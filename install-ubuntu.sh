@@ -56,6 +56,7 @@ sudo apt install -y \
     network-manager \
     thunar \
     zoxide
+
 # -----------------------------
 # Install Oh-My-Zsh
 # -----------------------------
@@ -66,7 +67,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # Install .zshrc 
 # -----------------------------
 curl -fsSL https://raw.githubusercontent.com/Vladicki/installl/refs/heads/main/.zshrc -o "$HOME/.zshrc"
-
 
 # -----------------------------
 # Install NVIM Config 
@@ -84,7 +84,7 @@ fi
 # -----------------------------
 # SSH Setup
 # -----------------------------
-read -p "Do you want to install and enable SSH? (y/n) " install_ssh
+read -p "Do you want to install and enable SSH? (y/n) " install_ssh < /dev/tty
 if [[ "$install_ssh" =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}Installing OpenSSH server...${RESET}"
     sudo apt install -y openssh-server
@@ -97,7 +97,7 @@ fi
 # -----------------------------
 # Docker Setup
 # -----------------------------
-read -p "Do you want to install Docker? (y/n) " install_docker
+read -p "Do you want to install Docker? (y/n) " install_docker < /dev/tty
 if [[ "$install_docker" =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}Installing Docker prerequisites...${RESET}"
     sudo apt install -y ca-certificates curl gnupg lsb-release
@@ -125,7 +125,7 @@ fi
 # -----------------------------
 # GoLang Setup
 # -----------------------------
-read -p "Do you want to install the latest Go (Golang)? (y/n) " install_go
+read -p "Do you want to install the latest Go (Golang)? (y/n) " install_go < /dev/tty
 if [[ "$install_go" =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}Installing latest Go...${RESET}"
     
@@ -141,16 +141,17 @@ if [[ "$install_go" =~ ^[Yy]$ ]]; then
     sudo tar -C /usr/local -xzf ${LATEST_GO}.linux-amd64.tar.gz
     rm ${LATEST_GO}.linux-amd64.tar.gz
     
-cat <<-'EOF' >> "$HOME/.zshrc"
-	export GOPATH="$HOME/go"
-	export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
+    # Append GOPATH and Go bin to .zshrc if not present
+    if ! grep -q "GOPATH" "$HOME/.zshrc"; then
+cat <<'EOF' >> "$HOME/.zshrc"
+export GOPATH="$HOME/go"
+export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
 EOF
+    fi
     
     # Reload shell
     source ~/.zshrc
     echo -e "${GREEN}Go installed successfully:${RESET} $(go version)"
 fi
 
-
 echo -e "${GREEN}Setup completed!${RESET}"
-
