@@ -38,7 +38,7 @@ sudo apt install -y \
     ufw \
     neovim \
     tmux \
-    zsh
+    zsh \
     fzf \
     python3 \
     python3-venv \
@@ -65,6 +65,20 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # Install .zshrc 
 # -----------------------------
 curl -fsSL https://raw.githubusercontent.com/Vladicki/installl/refs/heads/main/.zshrc -o "$HOME/.zshrc"
+
+
+# -----------------------------
+# Install NVIM Config 
+# -----------------------------
+mkdir -p "$HOME/.config"
+
+if [ -d "$HOME/.config/nvim/.git" ]; then
+  git -C "$HOME/.config/nvim" pull
+elif [ -d "$HOME/.config/nvim" ]; then
+  echo "⚠️ ~/.config/nvim exists but is not a git repo, skipping"
+else
+  git clone https://github.com/Vladicki/.nvim.git "$HOME/.config/nvim"
+fi
 
 # -----------------------------
 # SSH Setup
@@ -126,11 +140,11 @@ if [[ "$install_go" =~ ^[Yy]$ ]]; then
     sudo tar -C /usr/local -xzf ${LATEST_GO}.linux-amd64.tar.gz
     rm ${LATEST_GO}.linux-amd64.tar.gz
     
-    # Add to PATH if not already present
-    if ! grep -q "/usr/local/go/bin" <<< "$PATH"; then
-        echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.zshrc
-        echo 'export GOPATH=$HOME/go' >> ~/.zshrc
-        echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.zshrc
+    if ! grep -q "GOPATH" "$HOME/.zshrc"; then
+    cat <<'EOF' >> "$HOME/.zshrc"
+    export GOPATH="$HOME/go"
+    export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
+    EOF
     fi
     
     # Reload shell
