@@ -149,7 +149,7 @@ if [[ "$install_go" =~ ^[Yy]$ ]]; then
 
     # Download
     TMP_GO="/tmp/${GO_VERSION}.linux-${GOARCH}.tar.gz"
-    curl -fsSL "https://go.dev/dl/${GO_VERSION}.linux-${GOARCH}.tar.gz" -o "$TMP_GO"
+    curl -fsSL https://go.dev/dl/${GO_VERSION}.linux-${GOARCH}.tar.gz" -o "$TMP_GO
 
     # Remove old Go and install new
     sudo rm -rf /usr/local/go
