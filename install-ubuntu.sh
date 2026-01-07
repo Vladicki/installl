@@ -60,6 +60,9 @@ sudo apt install -y \
 # -----------------------------
 # Install Oh-My-Zsh
 # -----------------------------
+export RUNZSH=no
+export CHSH=no
+export KEEP_ZSHRC=yes
 echo -e "${YELLOW}Installing Oh-My-Zsh...${RESET}"
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || true
 
@@ -141,6 +144,10 @@ LATEST_GO=$(curl -s "https://go.dev/VERSION?m=text" | head -n1 | tr -d '\r\n')
     sudo tar -C /usr/local -xzf ${LATEST_GO}.linux-amd64.tar.gz
     rm ${LATEST_GO}.linux-amd64.tar.gz
     
+    # Reload shell
+    source ~/.zshrc
+    echo -e "${GREEN}Go installed successfully:${RESET} $(go version)"
+
     # Append GOPATH and Go bin to .zshrc if not present
     if ! grep -q "GOPATH" "$HOME/.zshrc"; then
 cat <<'EOF' >> "$HOME/.zshrc"
@@ -151,7 +158,6 @@ EOF
     
     # Reload shell
     source ~/.zshrc
-    echo -e "${GREEN}Go installed successfully:${RESET} $(go version)"
 fi
 
 echo -e "${GREEN}Setup completed!${RESET}"
