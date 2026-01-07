@@ -13,7 +13,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # PATH for rust
 export PATH="$HOME/.cargo/bin:$PATH"
 # PATH for golang
-export PATH="$(go env GOPATH)/bin:$PATH"
+# export PATH="$(go env GOPATH)/bin:$PATH"
 # Created by `pipx` 
 export PATH="$PATH:/home/vla/.local/bin"
 
