@@ -131,33 +131,52 @@ fi
 read -p "Do you want to install the latest Go (Golang)? (y/n) " install_go < /dev/tty
 if [[ "$install_go" =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}Installing latest Go...${RESET}"
-    
-    # Remove old Go if exists
-    sudo rm -rf /usr/local/go
-    
-    # Get latest version dynamically
-LATEST_GO=$(curl -s "https://go.dev/VERSION?m=text" | head -n1 | tr -d '\r\n')
-    echo "Latest Go version: $LATEST_GO"
-    
-    # Download and extract
-    curl -LO https://go.dev/dl/${LATEST_GO}.linux-amd64.tar.gz
-    sudo tar -C /usr/local -xzf ${LATEST_GO}.linux-amd64.tar.gz
-    rm ${LATEST_GO}.linux-amd64.tar.gz
-    
-    # Reload shell
-    source ~/.zshrc
-    echo -e "${GREEN}Go installed successfully:${RESET} $(go version)"
 
-    # Append GOPATH and Go bin to .zshrc if not present
-    if ! grep -q "GOPATH" "$HOME/.zshrc"; then
-cat <<'EOF' >> "$HOME/.zshrc"
+    # Detect architecture
+    ARCH=$(dpkg --print-architecture)
+    case "$ARCH" in
+        amd64) GOARCH="amd64" ;;
+        arm64) GOARCH="arm64" ;;
+        *)
+            echo "Unsupported architecture: $ARCH"
+            exit 1
+            ;;
+    esac
+
+    # Get latest Go version
+    GO_VERSION=$(curl -fsSL https://go.dev/VERSION?m=text)
+    echo "Latest Go version: $GO_VERSION"
+
+    # Download
+    TMP_GO="/tmp/${GO_VERSION}.linux-${GOARCH}.tar.gz"
+    curl -fsSL "https://go.dev/dl/${GO_VERSION}.linux-${GOARCH}.tar.gz" -o "$TMP_GO"
+
+    # Remove old Go and install new
+    sudo rm -rf /usr/local/go
+    sudo tar -C /usr/local -xzf "$TMP_GO"
+    rm -f "$TMP_GO"
+
+    # Ensure PATH is set (bash + zsh)
+    GO_PATH_LINE='export PATH=/usr/local/go/bin:$PATH'
+
+    for rc in "$HOME/.bashrc" "$HOME/.zshrc"; do
+        if [ -f "$rc" ] && ! grep -q "/usr/local/go/bin" "$rc"; then
+            echo "$GO_PATH_LINE" >> "$rc"
+        fi
+    done
+
+    # Optional GOPATH (safe, standard)
+    if ! grep -q "export GOPATH=" "$HOME/.zshrc" 2>/dev/null; then
+        cat <<'EOF' >> "$HOME/.zshrc"
 export GOPATH="$HOME/go"
-export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
+export PATH="$PATH:$GOPATH/bin"
 EOF
     fi
-    
-    # Reload shell
-    source ~/.zshrc
-fi
 
+    echo -e "${GREEN}Go installed successfully.${RESET}"
+    echo "Open a new terminal or run:"
+    echo "  source ~/.zshrc  OR  source ~/.bashrc"
+    echo "Verify with:"
+    echo "  go version"
+fi
 echo -e "${GREEN}Setup completed!${RESET}"

@@ -87,7 +87,7 @@ ENABLE_CORRECTION="true"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions copypath emoji encode64 web-search history zsh-vi-mode )
+plugins=(git copypath emoji encode64 web-search history )
 
 # alias vim='vim'
 alias vi='nvim'
@@ -399,7 +399,7 @@ decompress() {
 # eval "$(/bin/brew shellenv)"
 eval "$(zoxide init zsh)"
 export XDG_CONFIG_HOME=/home/vla/.config
-source /home/vla/tools/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source /home/vla/tools/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 export QT_QPA_PLATFORMTHEME=qt5ct
